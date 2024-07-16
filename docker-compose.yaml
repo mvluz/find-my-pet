@@ -1,0 +1,28 @@
+version: '3'
+services:
+  my-app:
+    build: .
+    #image: docker-hub-user/image-name:image-tag
+    ports:
+     - 3000:3000
+    environment:
+     - POSTGRES_USER=${POSTGRES_ADMIN_USER}
+     - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASS}
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+    environment:
+      - POSTGRES_DB=testDB
+      - POSTGRES_USER=${POSTGRES_ADMIN_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASS}
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
